@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "602656947413",
+    "firebase_url": "https://feasted-ddbfe.firebaseio.com",
+    "project_id": "feasted-ddbfe",
+    "storage_bucket": "feasted-ddbfe.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:602656947413:android:73c67e66c1f2a15201b65c",
+        "android_client_info": {
+          "package_name": "com.example.feasted"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "602656947413-vu5do3l21icuiqj80bek1tmju9tq0nov.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.feasted",
+            "certificate_hash": "dcb9505d65b10df9d5c26b3dbf1849ac1ca35da3"
+          }
+        },
+        {
+          "client_id": "602656947413-kchtd91f2qvl693m79csoh0h57lipqk6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCx51o4BIurLkyNyVKmt0_RFqmAPzbPuI4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "602656947413-kchtd91f2qvl693m79csoh0h57lipqk6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
