@@ -1,6 +1,8 @@
 package com.example.feasted;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -27,16 +29,12 @@ public class MainActivity extends AppCompatActivity {
 
         myFoodList = new ArrayList<>();
 
-        mFoodMeta = new FoodMeta("Butter Chicken", "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.", 850, R.drawable.image);
-        myFoodList.add(mFoodMeta);
-        mFoodMeta = new FoodMeta("Pizza", "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.", 90, R.drawable.image2);
-        myFoodList.add(mFoodMeta);
-        mFoodMeta = new FoodMeta("Chicken and Leekpie", "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.", 150, R.drawable.image3);
-        myFoodList.add(mFoodMeta);
-        mFoodMeta = new FoodMeta("Lotus and Pasta", "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.", 158, R.drawable.image4);
-        myFoodList.add(mFoodMeta);
-
         MyAdapter myAdapter = new MyAdapter(MainActivity.this, myFoodList);
         recyclerView.setAdapter(myAdapter);
+    }
+
+    public void btn_uploadActivity(View view) {
+        startActivity(new Intent(this, RecipeUploaderActivity.class));
+
     }
 }
