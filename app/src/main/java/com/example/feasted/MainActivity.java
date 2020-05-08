@@ -1,74 +1,42 @@
 package com.example.feasted;
 
 import android.os.Bundle;
-import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    private static final String TAG = "MainActivity";
-    private static final int NUM_COLUMNS = 2;
-
-    private ArrayList<String> mImageUrls = new ArrayList<>();
-    private ArrayList<String> mNames = new ArrayList<>();
-
+    RecyclerView recyclerView;
+    List<FoodMeta> myFoodList;
+    FoodMeta mFoodMeta;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        initImageBitmaps();
-    }
+        recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
 
-    private void initImageBitmaps() {
-        Log.d(TAG, "initImageBitmaps: preparing bitmaps.");
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(MainActivity.this, 1);
+        recyclerView.setLayoutManager(gridLayoutManager);
 
-        mImageUrls.add("https://c1.staticflickr.com/5/4636/25316407448_de5fbf183d_o.jpg");
-        mNames.add("Havasu Falls");
+        myFoodList = new ArrayList<>();
 
-        mImageUrls.add("https://i.redd.it/tpsnoz5bzo501.jpg");
-        mNames.add("Trondheim");
+        mFoodMeta = new FoodMeta("Butter Chicken", "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.", 850, R.drawable.image);
+        myFoodList.add(mFoodMeta);
+        mFoodMeta = new FoodMeta("Pizza", "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.", 90, R.drawable.image2);
+        myFoodList.add(mFoodMeta);
+        mFoodMeta = new FoodMeta("Chicken and Leekpie", "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.", 150, R.drawable.image3);
+        myFoodList.add(mFoodMeta);
+        mFoodMeta = new FoodMeta("Lotus and Pasta", "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.", 158, R.drawable.image4);
+        myFoodList.add(mFoodMeta);
 
-        mImageUrls.add("https://i.redd.it/qn7f9oqu7o501.jpg");
-        mNames.add("Portugal");
-
-        mImageUrls.add("https://i.redd.it/j6myfqglup501.jpg");
-        mNames.add("Rocky Mountain National Park");
-
-        mImageUrls.add("https://i.redd.it/0h2gm1ix6p501.jpg");
-        mNames.add("Mahahual");
-
-        mImageUrls.add("https://i.redd.it/k98uzl68eh501.jpg");
-        mNames.add("Frozen Lake");
-
-        mImageUrls.add("https://i.redd.it/glin0nwndo501.jpg");
-        mNames.add("White Sands Desert");
-
-        mImageUrls.add("https://i.redd.it/obx4zydshg601.jpg");
-        mNames.add("Austrailia");
-
-        mImageUrls.add("https://i.imgur.com/ZcLLrkY.jpg");
-        mNames.add("Washington");
-
-        initRecyclerView();
-    }
-
-    private void initRecyclerView() {
-        Log.d(TAG, "initRecyclerView: initializing staggered recyclerview.");
-
-        RecyclerView recyclerView = findViewById(R.id.recyclerView);
-        StaggeredRecyclerViewAdapter staggeredRecyclerViewAdapter =
-                new StaggeredRecyclerViewAdapter(this, mNames, mImageUrls);
-        StaggeredGridLayoutManager staggeredGridLayoutManager =
-                new StaggeredGridLayoutManager(NUM_COLUMNS, LinearLayoutManager.VERTICAL);
-        recyclerView.setLayoutManager(staggeredGridLayoutManager);
-        recyclerView.setAdapter(staggeredRecyclerViewAdapter);
+        MyAdapter myAdapter = new MyAdapter(MainActivity.this, myFoodList);
+        recyclerView.setAdapter(myAdapter);
     }
 }
