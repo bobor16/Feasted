@@ -33,10 +33,6 @@ public class RecipeUploaderActivity extends AppCompatActivity {
     EditText upload_description, recipeName;
     String imageUrl;
 
-//    private StorageReference mStorageRef;
-//    private DatabaseReference mDatabaseRef;
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,10 +41,6 @@ public class RecipeUploaderActivity extends AppCompatActivity {
         recipeImage = (ImageView) findViewById(R.id.uploadImage);
         recipeName = (EditText) findViewById(R.id.recipeName);
         upload_description = (EditText) findViewById(R.id.upload_description);
-
-//        mStorageRef = FirebaseStorage.getInstance().getReference("uploads");
-//        mDatabaseRef = FirebaseDatabase.getInstance().getReference("uploads");
-
     }
 
     public void btnSelectImage(View view) {
@@ -56,8 +48,6 @@ public class RecipeUploaderActivity extends AppCompatActivity {
         intent.setType("image/*");
         startActivityForResult(intent, 1);
     }
-
-
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -85,11 +75,14 @@ public class RecipeUploaderActivity extends AppCompatActivity {
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                 Task<Uri> uriTask = taskSnapshot.getStorage().getDownloadUrl();
                 while (!uriTask.isComplete()) ;
-                uploadRecipe();
                 Uri urlImage = uriTask.getResult();
                 imageUrl = urlImage.toString();
+                uploadRecipe();
+
                 progressDialog.dismiss();
+                System.out.println("THIS IS THE IMAGE URL: " + imageUrl);
             }
+
 
         }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -110,6 +103,9 @@ public class RecipeUploaderActivity extends AppCompatActivity {
                 upload_description.getText().toString(),
                 imageUrl
         );
+
+        System.out.println(imageUrl);
+
         String myCurrentDateTime = DateFormat.getDateTimeInstance()
                 .format(Calendar.getInstance().getTime());
 
@@ -128,9 +124,6 @@ public class RecipeUploaderActivity extends AppCompatActivity {
             @Override
             public void onFailure(@NonNull Exception e) {
                 Toast.makeText(RecipeUploaderActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
-                System.out.println("IS NOT COMPLETED!!!!!!!!!!!!!!");
-
-
             }
         });
     }
