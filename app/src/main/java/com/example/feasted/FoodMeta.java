@@ -2,15 +2,16 @@ package com.example.feasted;
 
 public class FoodMeta {
 
-    private String name, description, img;
+    private String name, description, img, type;
 
     public FoodMeta() {
     }
 
-    public FoodMeta(String name, String description, String img) {
+    public FoodMeta(String name, String description, String img, String type) {
         this.name = name;
         this.description = description;
         this.img = img;
+        this.type = type;
     }
 
     public String getName() {
@@ -24,5 +25,7 @@ public class FoodMeta {
     public String getImg() {
         return img;
     }
+
+    public String getType() { return type; }
 
 }

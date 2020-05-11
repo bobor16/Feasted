@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RadioButton;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -32,6 +33,7 @@ public class RecipeUploaderActivity extends AppCompatActivity {
     Uri uri;
     EditText upload_description, recipeName;
     String imageUrl;
+    RadioButton vegan_Button, lchf_Button;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +43,8 @@ public class RecipeUploaderActivity extends AppCompatActivity {
         recipeImage = (ImageView) findViewById(R.id.uploadImage);
         recipeName = (EditText) findViewById(R.id.recipeName);
         upload_description = (EditText) findViewById(R.id.upload_description);
+        vegan_Button = (RadioButton) findViewById(R.id.vegan_Button);
+        lchf_Button = (RadioButton) findViewById(R.id.lchf_Button);
     }
 
     public void btnSelectImage(View view) {
@@ -96,12 +100,23 @@ public class RecipeUploaderActivity extends AppCompatActivity {
         uploadImage();
     }
 
+    public String recipeType() {
+        if (vegan_Button.isChecked()){
+            return "Vegan";
+        } else if (lchf_Button.isChecked()){
+            return "LCHF";
+        } else {
+            return "";
+        }
+    }
+
     public void uploadRecipe() {
         System.out.println("UPLOADING!!!!!!!!!!!!!!");
         FoodMeta foodMeta = new FoodMeta(
                 recipeName.getText().toString(),
                 upload_description.getText().toString(),
-                imageUrl
+                imageUrl,
+                recipeType()
         );
 
         System.out.println(imageUrl);
