@@ -12,12 +12,14 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.squareup.picasso.Picasso;
+
 import java.util.List;
 
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolderFood> {
 
     private Context mContext;
-
     private List<FoodMeta> myFoodList;
 
     public MyAdapter(Context context, List<FoodMeta> myFoodList) {
@@ -34,7 +36,10 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolderFood> {
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolderFood holder, final int position) {
-//        holder.imageView.setImageResource(myFoodList.get(position).getImg());
+
+//        Glide.with(mContext).load(myFoodList.get(position).getImg()).into(holder.imageView);
+        Picasso.get().load(myFoodList.get(position).getImg()).into(holder.imageView);
+//        holder.imageView.setImageResource(Integer.parseInt(myFoodList.get(position).getImg()));
         holder.mTitle.setText(myFoodList.get(position).getName());
         holder.mDescription.setText(myFoodList.get(position).getDescription());
 
@@ -56,17 +61,16 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolderFood> {
 
     class ViewHolderFood extends RecyclerView.ViewHolder {
         ImageView imageView;
-        TextView mTitle, mDescription, mPrice;
+        TextView mTitle, mDescription;
         CardView mCardView;
 
 
-        public ViewHolderFood(@NonNull View itemView) {
+        public ViewHolderFood(View itemView) {
             super(itemView);
 
             imageView = itemView.findViewById(R.id.ivImage);
             mTitle = itemView.findViewById(R.id.title);
             mDescription = itemView.findViewById(R.id.description);
-//            mPrice = itemView.findViewById(R.id.price);
             mCardView = itemView.findViewById(R.id.cardView);
         }
     }

@@ -18,7 +18,7 @@
             android:layout_width="match_parent"
             android:layout_height="200dp"
             android:scaleType="centerCrop"
-            android:src="@drawable/placeholder"></ImageView>
+            android:src="@drawable/placeholder" />
 
         <EditText
             android:id="@+id/recipeName"
@@ -26,7 +26,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:hint="Recipe Name"
-            android:textSize="19sp"></EditText>
+            android:textSize="19sp" />
 
         <EditText
             android:id="@+id/upload_description"
@@ -34,7 +34,23 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:hint="Description"
-            android:textSize="19sp"></EditText>
+            android:textSize="19sp" />
+
+        <Switch
+            android:id="@+id/vegan_switch"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="10dp"
+            android:hint="Vegan"
+            android:textSize="19sp" />
+
+        <Switch
+            android:id="@+id/lchf_switch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:hint="LCHF"
+            android:textSize="19sp" />
 
         <Button
             android:layout_width="match_parent"
@@ -43,7 +59,7 @@
             android:onClick="btnSelectImage"
             android:text="Select Image"
             android:textColor="#ffffff"
-            android:textSize="22sp"></Button>
+            android:textSize="22sp" />
 
         <Button
             android:layout_width="match_parent"
@@ -52,9 +68,7 @@
             android:onClick="recipeBtnUpload"
             android:text="Upload Recipe"
             android:textColor="#ffffff"
-            android:textSize="22sp">
-
-        </Button>
+            android:textSize="22sp" />
     </LinearLayout>
 
 

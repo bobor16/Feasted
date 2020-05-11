@@ -4,6 +4,9 @@ public class FoodMeta {
 
     private String name, description, img;
 
+    public FoodMeta() {
+    }
+
     public FoodMeta(String name, String description, String img) {
         this.name = name;
         this.description = description;

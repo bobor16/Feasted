@@ -17,6 +17,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -27,19 +28,27 @@ import java.util.Calendar;
 
 public class RecipeUploaderActivity extends AppCompatActivity {
 
-    ImageView image;
+    ImageView recipeImage;
     Uri uri;
     EditText upload_description, recipeName;
     String imageUrl;
+
+//    private StorageReference mStorageRef;
+//    private DatabaseReference mDatabaseRef;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_upload_recipe);
 
-        image = findViewById(R.id.uploadImage);
-        upload_description = findViewById(R.id.upload_description);
-        recipeName = findViewById(R.id.recipeName);
+        recipeImage = (ImageView) findViewById(R.id.uploadImage);
+        recipeName = (EditText) findViewById(R.id.recipeName);
+        upload_description = (EditText) findViewById(R.id.upload_description);
+
+//        mStorageRef = FirebaseStorage.getInstance().getReference("uploads");
+//        mDatabaseRef = FirebaseDatabase.getInstance().getReference("uploads");
+
     }
 
     public void btnSelectImage(View view) {
@@ -48,13 +57,16 @@ public class RecipeUploaderActivity extends AppCompatActivity {
         startActivityForResult(intent, 1);
     }
 
+
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (resultCode == RESULT_OK) {
             uri = data.getData();
-            image.setImageURI(uri);
+            recipeImage.setImageURI(uri);
+
         } else {
             Toast.makeText(this, "Please pick an image", Toast.LENGTH_SHORT).show();
         }
@@ -73,9 +85,9 @@ public class RecipeUploaderActivity extends AppCompatActivity {
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                 Task<Uri> uriTask = taskSnapshot.getStorage().getDownloadUrl();
                 while (!uriTask.isComplete()) ;
+                uploadRecipe();
                 Uri urlImage = uriTask.getResult();
                 imageUrl = urlImage.toString();
-                uploadRecipe();
                 progressDialog.dismiss();
             }
 
@@ -92,6 +104,7 @@ public class RecipeUploaderActivity extends AppCompatActivity {
     }
 
     public void uploadRecipe() {
+        System.out.println("UPLOADING!!!!!!!!!!!!!!");
         FoodMeta foodMeta = new FoodMeta(
                 recipeName.getText().toString(),
                 upload_description.getText().toString(),
@@ -100,12 +113,14 @@ public class RecipeUploaderActivity extends AppCompatActivity {
         String myCurrentDateTime = DateFormat.getDateTimeInstance()
                 .format(Calendar.getInstance().getTime());
 
-        FirebaseDatabase.getInstance().getReference("Test")
-                .child(myCurrentDateTime).setValue(foodMeta).addOnCompleteListener(new OnCompleteListener<Void>() {
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference("Recipe");
+        myRef.child(myCurrentDateTime).setValue(foodMeta).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()) {
                     Toast.makeText(RecipeUploaderActivity.this, "Recipe Uploaded", Toast.LENGTH_SHORT).show();
+                    System.out.println("IS COMPLETED!!!!!!!!!!!!!!");
                     finish();
                 }
             }
@@ -113,6 +128,9 @@ public class RecipeUploaderActivity extends AppCompatActivity {
             @Override
             public void onFailure(@NonNull Exception e) {
                 Toast.makeText(RecipeUploaderActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                System.out.println("IS NOT COMPLETED!!!!!!!!!!!!!!");
+
+
             }
         });
     }
