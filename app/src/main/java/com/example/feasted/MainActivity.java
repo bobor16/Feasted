@@ -4,7 +4,6 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -92,12 +91,15 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.sort_lchf:
                 filter("lchf");
-                return true;
-
+                break;
             case R.id.sort_vegan:
                 filter("vegan");
-                return true;
+                break;
+            case R.id.show_all:
+                filter("");
+                break;
         }
+
         return super.onOptionsItemSelected(item);
     }
 

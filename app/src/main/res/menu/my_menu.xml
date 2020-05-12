@@ -11,10 +11,14 @@
     <item
         android:id="@+id/sort_vegan"
         android:title="Only show vegan"
-        app:showAsAction="never"/>
+        app:showAsAction="never" />
 
     <item
         android:id="@+id/sort_lchf"
         android:title="Only show LCHF"
-        app:showAsAction="never"/>
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/show_all"
+        android:title="Show all"
+        app:showAsAction="never" />
 </menu>

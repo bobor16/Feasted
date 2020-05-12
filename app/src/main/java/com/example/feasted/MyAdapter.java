@@ -54,7 +54,6 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolderFood> {
                 intent.putExtra("Description", myFoodList.get(holder.getAdapterPosition()).getDescription());
                 mContext.startActivity(intent);
             }
-
         });
 
         setAnimation(holder.itemView, position);
