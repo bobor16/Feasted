@@ -4,10 +4,10 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.ListView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -77,14 +77,28 @@ public class MainActivity extends AppCompatActivity {
 
     private void filter(String text) {
         ArrayList<FoodMeta> filterList = new ArrayList<>();
-
         for (FoodMeta item : myFoodList) {
             if (item.getName().toLowerCase().contains(text.toLowerCase())) {
                 filterList.add(item);
-
+            } else if (item.getType().toLowerCase().contains(text.toLowerCase())) {
+                filterList.add(item);
             }
         }
         myAdapter.filteredList(filterList);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.sort_lchf:
+                filter("lchf");
+                return true;
+
+            case R.id.sort_vegan:
+                filter("vegan");
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override

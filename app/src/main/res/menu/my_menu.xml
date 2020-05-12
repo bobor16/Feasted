@@ -8,4 +8,13 @@
         android:title="Search"
         app:actionViewClass="androidx.appcompat.widget.SearchView"
         app:showAsAction="ifRoom|collapseActionView" />
+    <item
+        android:id="@+id/sort_vegan"
+        android:title="Only show vegan"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/sort_lchf"
+        android:title="Only show LCHF"
+        app:showAsAction="never"/>
 </menu>

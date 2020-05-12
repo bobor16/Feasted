@@ -24,10 +24,8 @@ public class RecipeDescriptionActivity extends AppCompatActivity {
 
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
-
-            description.setText(bundle.getString("Description"));
             Picasso.get().load(bundle.getString("Image")).into(img);
-
+            description.setText(bundle.getString("Description"));
         }
     }
 }

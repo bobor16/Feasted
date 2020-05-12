@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.ScaleAnimation;
 import android.widget.ImageView;
 import android.widget.SearchView;
 import android.widget.TextView;
@@ -13,7 +15,6 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -23,6 +24,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolderFood> {
 
     private Context mContext;
     private List<FoodMeta> myFoodList;
+    private int lastPos = -1;
 
     public MyAdapter(Context context, List<FoodMeta> myFoodList) {
         this.mContext = context;
@@ -52,7 +54,21 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolderFood> {
                 intent.putExtra("Description", myFoodList.get(holder.getAdapterPosition()).getDescription());
                 mContext.startActivity(intent);
             }
+
         });
+
+        setAnimation(holder.itemView, position);
+    }
+
+    public void setAnimation(View viewToAnimate, int pos) {
+        if (pos > lastPos) {
+            ScaleAnimation animation = new ScaleAnimation(0.0f, 1.0f, 0.0f, 1.0f,
+                    Animation.RELATIVE_TO_SELF, 0.5f,
+                    Animation.RELATIVE_TO_SELF, 0.5f);
+            animation.setDuration(500);
+            viewToAnimate.startAnimation(animation);
+            lastPos = pos;
+        }
     }
 
     @Override
