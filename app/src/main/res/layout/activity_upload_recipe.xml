@@ -16,7 +16,7 @@
         <ImageView
             android:id="@+id/uploadImage"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
+            android:layout_height="250dp"
             android:scaleType="centerCrop"
             android:src="@drawable/placeholder" />
 
@@ -41,13 +41,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:checked="false"
-            android:text="Vegan" />
+            android:text="Vegan"
+            android:textSize="19sp" />
 
         <RadioButton
             android:id="@+id/lchf_Button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="LCHF" />
+            android:text="LCHF"
+            android:textSize="19sp" />
 
         <Button
             android:layout_width="match_parent"

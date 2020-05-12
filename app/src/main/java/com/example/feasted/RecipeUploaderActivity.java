@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -40,11 +41,11 @@ public class RecipeUploaderActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_upload_recipe);
 
-        recipeImage = (ImageView) findViewById(R.id.uploadImage);
-        recipeName = (EditText) findViewById(R.id.recipeName);
-        upload_description = (EditText) findViewById(R.id.upload_description);
-        vegan_Button = (RadioButton) findViewById(R.id.vegan_Button);
-        lchf_Button = (RadioButton) findViewById(R.id.lchf_Button);
+        recipeImage = findViewById(R.id.uploadImage);
+        recipeName = findViewById(R.id.recipeName);
+        upload_description = findViewById(R.id.upload_description);
+        vegan_Button = findViewById(R.id.vegan_Button);
+        lchf_Button = findViewById(R.id.lchf_Button);
     }
 
     public void btnSelectImage(View view) {
@@ -82,7 +83,6 @@ public class RecipeUploaderActivity extends AppCompatActivity {
                 Uri urlImage = uriTask.getResult();
                 imageUrl = urlImage.toString();
                 uploadRecipe();
-
                 progressDialog.dismiss();
                 System.out.println("THIS IS THE IMAGE URL: " + imageUrl);
             }
@@ -101,9 +101,9 @@ public class RecipeUploaderActivity extends AppCompatActivity {
     }
 
     public String recipeType() {
-        if (vegan_Button.isChecked()){
+        if (vegan_Button.isChecked()) {
             return "Vegan";
-        } else if (lchf_Button.isChecked()){
+        } else if (lchf_Button.isChecked()) {
             return "LCHF";
         } else {
             return "";
@@ -111,15 +111,12 @@ public class RecipeUploaderActivity extends AppCompatActivity {
     }
 
     public void uploadRecipe() {
-        System.out.println("UPLOADING!!!!!!!!!!!!!!");
         FoodMeta foodMeta = new FoodMeta(
                 recipeName.getText().toString(),
                 upload_description.getText().toString(),
                 imageUrl,
                 recipeType()
         );
-
-        System.out.println(imageUrl);
 
         String myCurrentDateTime = DateFormat.getDateTimeInstance()
                 .format(Calendar.getInstance().getTime());
@@ -131,7 +128,6 @@ public class RecipeUploaderActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()) {
                     Toast.makeText(RecipeUploaderActivity.this, "Recipe Uploaded", Toast.LENGTH_SHORT).show();
-                    System.out.println("IS COMPLETED!!!!!!!!!!!!!!");
                     finish();
                 }
             }

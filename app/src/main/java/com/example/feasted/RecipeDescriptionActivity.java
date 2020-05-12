@@ -6,9 +6,11 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.squareup.picasso.Picasso;
+
 public class RecipeDescriptionActivity extends AppCompatActivity {
 
-    TextView description;
+    TextView description, type;
     ImageView img;
 
     @Override
@@ -18,12 +20,13 @@ public class RecipeDescriptionActivity extends AppCompatActivity {
 
         description = findViewById(R.id.recipeDescription);
         img = findViewById(R.id.detailed_image);
+        type = findViewById(R.id.detailed_type);
 
         Bundle bundle = getIntent().getExtras();
-
         if (bundle != null) {
+
             description.setText(bundle.getString("Description"));
-            img.setImageResource(bundle.getInt("Image"));
+            Picasso.get().load(bundle.getString("Image")).into(img);
 
         }
     }
