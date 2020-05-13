@@ -13,6 +13,8 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.squareup.picasso.Picasso;
@@ -53,10 +55,21 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolderFood> {
                 intent.putExtra("Image", myFoodList.get(holder.getAdapterPosition()).getImg());
                 intent.putExtra("Description", myFoodList.get(holder.getAdapterPosition()).getDescription());
                 mContext.startActivity(intent);
+//                updateFragment(new RecipeDescription());
+
             }
         });
 
         setAnimation(holder.itemView, position);
+    }
+
+    private void updateFragment(Fragment fragment) {
+        MainActivity m = new MainActivity();
+        m.getSupportFragmentManager()
+                .beginTransaction()
+                .add(R.id.container, fragment)
+                .addToBackStack(null)
+                .commit();
     }
 
     public void setAnimation(View viewToAnimate, int pos) {

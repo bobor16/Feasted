@@ -7,10 +7,15 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -25,6 +30,9 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
+    private final String SHOW_VEGAN = "vegan";
+    private final String SHOW_LCHF = "lchf";
+    private final String SHOW_ALL = "";
     RecyclerView recyclerView;
     List<FoodMeta> myFoodList;
     private DatabaseReference dbRef;
@@ -33,10 +41,15 @@ public class MainActivity extends AppCompatActivity {
     ArrayAdapter<String> arrayAdapter;
     MyAdapter myAdapter;
 
+    private LinearLayout fragmentContainer;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        fragmentContainer = (LinearLayout) findViewById(R.id.fragment_container_view_tag);
 
         recyclerView = findViewById(R.id.recyclerView);
 
@@ -74,6 +87,15 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    public void openFragment(String text) {
+        DetailedRecipe fragment = DetailedRecipe.newInstance(text);
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+
+        transaction.addToBackStack(null);
+        transaction.add(R.id.fragment_container_view_tag, fragment, "DETAILED_FRAGMENT").commit();
+    }
+
     private void filter(String text) {
         ArrayList<FoodMeta> filterList = new ArrayList<>();
         for (FoodMeta item : myFoodList) {
@@ -90,13 +112,13 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.sort_lchf:
-                filter("lchf");
+                filter(SHOW_LCHF);
                 break;
             case R.id.sort_vegan:
-                filter("vegan");
+                filter(SHOW_VEGAN);
                 break;
             case R.id.show_all:
-                filter("");
+                filter(SHOW_ALL);
                 break;
         }
 
@@ -124,6 +146,7 @@ public class MainActivity extends AppCompatActivity {
         });
         return super.onCreateOptionsMenu(menu);
     }
+
 
     public void btn_uploadActivity(View view) {
         startActivity(new Intent(this, RecipeUploaderActivity.class));
