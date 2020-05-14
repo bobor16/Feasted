@@ -4,9 +4,12 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -25,16 +28,20 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.lang.reflect.Array;
 import java.text.DateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 
 public class RecipeUploaderActivity extends AppCompatActivity {
 
     ImageView recipeImage;
     Uri uri;
-    EditText upload_description, recipeName;
+    EditText upload_description, recipeName, ingredient, newIngredient;
     String imageUrl;
     RadioButton vegan_Button, lchf_Button;
+    int numberOfLines = 0;
+    int maxIngredients = 20;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +53,30 @@ public class RecipeUploaderActivity extends AppCompatActivity {
         upload_description = findViewById(R.id.upload_description);
         vegan_Button = findViewById(R.id.vegan_Button);
         lchf_Button = findViewById(R.id.lchf_Button);
+        ingredient = findViewById(R.id.upload_ingredient);
+
     }
+
+
+    public void btnNewLine(View view) {
+        LinearLayout linearLayout = findViewById(R.id.new_line);
+        EditText editText = new EditText(view.getContext());
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT);
+        editText.setHint("Add ingredient");
+        linearLayout.addView(editText, params);
+        editText.setId(numberOfLines += 1);
+        System.out.println(numberOfLines);
+
+        ArrayList<EditText> list = new ArrayList<>();
+
+        for (int i = 0; i < maxIngredients; i++) {
+            EditText et = new EditText(view.getContext());
+            list.add(et);
+            System.out.println(list);
+        }
+    }
+
 
     public void btnSelectImage(View view) {
         Intent intent = new Intent(Intent.ACTION_PICK);
@@ -115,7 +145,9 @@ public class RecipeUploaderActivity extends AppCompatActivity {
                 recipeName.getText().toString(),
                 upload_description.getText().toString(),
                 imageUrl,
-                recipeType()
+                recipeType(),
+                "- " + ingredient.getText().toString()
+
         );
 
         String myCurrentDateTime = DateFormat.getDateTimeInstance()
@@ -138,4 +170,6 @@ public class RecipeUploaderActivity extends AppCompatActivity {
             }
         });
     }
+
+
 }

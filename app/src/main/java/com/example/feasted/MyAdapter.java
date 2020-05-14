@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.ScaleAnimation;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.SearchView;
 import android.widget.TextView;
@@ -43,7 +44,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolderFood> {
     @Override
     public void onBindViewHolder(@NonNull final ViewHolderFood holder, final int position) {
 
-        Picasso.get().load(myFoodList.get(position).getImg()).into(holder.imageView);
+        Picasso.get().load(myFoodList.get(position).getImg()).into(holder.mImageView);
         holder.mTitle.setText(myFoodList.get(position).getName());
         holder.mDescription.setText(myFoodList.get(position).getDescription());
         holder.mDetailedType.setText(myFoodList.get(position).getType());
@@ -54,9 +55,10 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolderFood> {
                 Intent intent = new Intent(mContext, RecipeDescriptionActivity.class);
                 intent.putExtra("Image", myFoodList.get(holder.getAdapterPosition()).getImg());
                 intent.putExtra("Description", myFoodList.get(holder.getAdapterPosition()).getDescription());
+                intent.putExtra("Ingredient", myFoodList.get(holder.getAdapterPosition()).getIngredient());
+
                 mContext.startActivity(intent);
 //                updateFragment(new RecipeDescription());
-
             }
         });
 
@@ -94,21 +96,22 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolderFood> {
     }
 
     class ViewHolderFood extends RecyclerView.ViewHolder {
-        ImageView imageView;
+        ImageView mImageView;
         TextView mTitle, mDescription, mDetailedType;
         CardView mCardView;
         SearchView mSearch;
-
+        EditText mIngredients;
 
         public ViewHolderFood(View itemView) {
             super(itemView);
 
-            imageView = itemView.findViewById(R.id.ivImage);
+            mImageView = itemView.findViewById(R.id.ivImage);
             mTitle = itemView.findViewById(R.id.title);
             mDescription = itemView.findViewById(R.id.description);
             mCardView = itemView.findViewById(R.id.cardView);
             mDetailedType = itemView.findViewById(R.id.detailed_type);
             mSearch = itemView.findViewById(R.id.search_icon);
+            mIngredients = itemView.findViewById(R.id.ingredient);
         }
     }
 }

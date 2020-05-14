@@ -52,7 +52,6 @@ public class MainActivity extends AppCompatActivity {
         fragmentContainer = (LinearLayout) findViewById(R.id.fragment_container_view_tag);
 
         recyclerView = findViewById(R.id.recyclerView);
-
         GridLayoutManager gridLayoutManager = new GridLayoutManager(MainActivity.this, 1);
         recyclerView.setLayoutManager(gridLayoutManager);
 

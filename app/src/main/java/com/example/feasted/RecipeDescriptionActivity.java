@@ -10,7 +10,7 @@ import com.squareup.picasso.Picasso;
 
 public class RecipeDescriptionActivity extends AppCompatActivity {
 
-    TextView description, type;
+    TextView description, type, ingredient;
     ImageView img;
 
     @Override
@@ -21,11 +21,13 @@ public class RecipeDescriptionActivity extends AppCompatActivity {
         description = findViewById(R.id.recipeDescription);
         img = findViewById(R.id.detailed_image);
         type = findViewById(R.id.detailed_type);
+        ingredient = findViewById(R.id.ingredient);
 
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
             Picasso.get().load(bundle.getString("Image")).into(img);
             description.setText(bundle.getString("Description"));
+            ingredient.setText(bundle.getString("Ingredient"));
         }
     }
 }
