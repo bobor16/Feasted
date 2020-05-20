@@ -4,14 +4,18 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.view.Gravity;
+import android.renderscript.Sampler;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -31,7 +35,12 @@ import com.google.firebase.storage.UploadTask;
 import java.lang.reflect.Array;
 import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
 
 public class RecipeUploaderActivity extends AppCompatActivity {
 
@@ -40,14 +49,13 @@ public class RecipeUploaderActivity extends AppCompatActivity {
     EditText upload_description, recipeName, ingredient, newIngredient;
     String imageUrl;
     RadioButton vegan_Button, lchf_Button;
-    int numberOfLines = 0;
-    int maxIngredients = 20;
+    int numberOfLines = 1;
+    List<EditText> listOfIngredients;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_upload_recipe);
-
         recipeImage = findViewById(R.id.uploadImage);
         recipeName = findViewById(R.id.recipeName);
         upload_description = findViewById(R.id.upload_description);
@@ -55,26 +63,6 @@ public class RecipeUploaderActivity extends AppCompatActivity {
         lchf_Button = findViewById(R.id.lchf_Button);
         ingredient = findViewById(R.id.upload_ingredient);
 
-    }
-
-
-    public void btnNewLine(View view) {
-        LinearLayout linearLayout = findViewById(R.id.new_line);
-        EditText editText = new EditText(view.getContext());
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT);
-        editText.setHint("Add ingredient");
-        linearLayout.addView(editText, params);
-        editText.setId(numberOfLines += 1);
-        System.out.println(numberOfLines);
-
-        ArrayList<EditText> list = new ArrayList<>();
-
-        for (int i = 0; i < maxIngredients; i++) {
-            EditText et = new EditText(view.getContext());
-            list.add(et);
-            System.out.println(list);
-        }
     }
 
 
@@ -114,7 +102,6 @@ public class RecipeUploaderActivity extends AppCompatActivity {
                 imageUrl = urlImage.toString();
                 uploadRecipe();
                 progressDialog.dismiss();
-                System.out.println("THIS IS THE IMAGE URL: " + imageUrl);
             }
 
 
@@ -140,14 +127,33 @@ public class RecipeUploaderActivity extends AppCompatActivity {
         }
     }
 
+//    public void addEditText() {
+//        LinearLayout linearLayout = findViewById(R.id.new_line);
+//        listOfIngredients = new ArrayList<>();
+//        newIngredient = new EditText(this);
+//        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+//                LinearLayout.LayoutParams.WRAP_CONTENT);
+//        newIngredient.setHint("Add ingredient");
+//        newIngredient.setId(numberOfLines++);
+//        linearLayout.addView(newIngredient, params);
+//        listOfIngredients.add(newIngredient);
+//
+//
+//
+//    }
+
+
+//    public void btnNewLine(View view) {
+//        addEditText();
+//    }
+
     public void uploadRecipe() {
         FoodMeta foodMeta = new FoodMeta(
                 recipeName.getText().toString(),
                 upload_description.getText().toString(),
                 imageUrl,
                 recipeType(),
-                "- " + ingredient.getText().toString()
-
+                ingredient.getText().toString()
         );
 
         String myCurrentDateTime = DateFormat.getDateTimeInstance()
@@ -155,7 +161,17 @@ public class RecipeUploaderActivity extends AppCompatActivity {
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference("Recipe");
+//        String id = myRef.push().getKey();
+
+//        if (id != null) {
+//            for (int i = 0; i < listOfIngredients.size(); i++) {
+//                myRef.child(id).child("ingredient").setValue(listOfIngredients.get(i).getText().toString());
+//            }
+//        } else {
+//            Toast.makeText(this, "No hable ingles", Toast.LENGTH_SHORT).show();
+//        }
         myRef.child(myCurrentDateTime).setValue(foodMeta).addOnCompleteListener(new OnCompleteListener<Void>() {
+
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()) {

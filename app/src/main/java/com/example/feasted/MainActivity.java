@@ -69,8 +69,8 @@ public class MainActivity extends AppCompatActivity {
                 myFoodList.clear();
 
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    FoodMeta meta = snapshot.getValue(FoodMeta.class);
-                    myFoodList.add(meta);
+                    FoodMeta foodMeta = snapshot.getValue(FoodMeta.class);
+                    myFoodList.add(foodMeta);
                 }
 
                 myAdapter.notifyDataSetChanged();
@@ -82,15 +82,6 @@ public class MainActivity extends AppCompatActivity {
                 progressDialog.dismiss();
             }
         });
-    }
-
-    public void openFragment(String text) {
-        DetailedRecipe fragment = DetailedRecipe.newInstance(text);
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction transaction = fragmentManager.beginTransaction();
-
-        transaction.addToBackStack(null);
-        transaction.add(R.id.fragment_container_view_tag, fragment, "DETAILED_FRAGMENT").commit();
     }
 
     private void filter(String text) {

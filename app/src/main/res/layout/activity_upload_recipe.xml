@@ -61,26 +61,28 @@
             android:textSize="19sp"
             android:textStyle="bold" />
 
-        <EditText
-            android:id="@+id/upload_ingredient"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:hint="Add ingredient"
-            android:textSize="19sp" />
 
         <LinearLayout
             android:id="@+id/new_line"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical" />
+            android:orientation="vertical">
 
-        <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="btnNewLine"
-            android:src="@drawable/ic_add_black_24dp" />
+            <EditText
+                android:id="@+id/upload_ingredient"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:hint="Add ingredient"
+                android:textSize="19sp" />
+        </LinearLayout>
 
+<!--        <ImageButton-->
+<!--            android:id="@+id/btnNewLine"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:onClick="btnNewLine"-->
+<!--            android:src="@drawable/ic_add_black_24dp" />-->
 
         <Button
             android:layout_width="match_parent"
@@ -99,6 +101,15 @@
             android:text="Upload Recipe"
             android:textColor="#ffffff"
             android:textSize="22sp" />
+
+<!--        <Button-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:backgroundTint="@color/colorPrimary"-->
+<!--            android:onClick="printEdittext"-->
+<!--            android:text="printEdittext"-->
+<!--            android:textColor="#ffffff"-->
+<!--            android:textSize="22sp" />-->
     </LinearLayout>
 
 
