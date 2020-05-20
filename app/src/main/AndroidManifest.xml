@@ -17,8 +17,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".RecipeUploaderActivity"></activity>
-        <activity android:name=".RecipeDescriptionActivity" />
+        <activity android:name=".RecipeUploaderFragment"></activity>
+        <activity android:name=".RecipeFragment" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

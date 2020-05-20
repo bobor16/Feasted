@@ -6,17 +6,16 @@ import java.util.ArrayList;
 
 public class FoodMeta {
 
-    private String name, description, img, type, ingredient;
+    private String name, description, img, type;
 
     public FoodMeta() {
     }
 
-    public FoodMeta(String name, String description, String img, String type, String ingredient) {
+    public FoodMeta(String name, String description, String img, String type) {
         this.name = name;
         this.description = description;
         this.img = img;
         this.type = type;
-        this.ingredient = ingredient;
     }
 
     public String getName() {
@@ -31,11 +30,6 @@ public class FoodMeta {
         return img;
     }
 
-    public String getType() {
-        return type;
-    }
+    public String getType() { return type; }
 
-    public String getIngredient() {
-        return ingredient;
-    }
 }
