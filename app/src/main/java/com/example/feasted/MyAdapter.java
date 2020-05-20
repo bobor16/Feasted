@@ -25,6 +25,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolderFood> {
     private Context mContext;
     private List<FoodMeta> myFoodList;
     private int lastPos = -1;
+    MainActivity mainActivity = new MainActivity();
 
     public MyAdapter(Context context, List<FoodMeta> myFoodList) {
         this.mContext = context;
@@ -40,7 +41,6 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolderFood> {
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolderFood holder, final int position) {
-
         Picasso.get().load(myFoodList.get(position).getImg()).into(holder.imageView);
         holder.mTitle.setText(myFoodList.get(position).getName());
         holder.mDescription.setText(myFoodList.get(position).getDescription());
@@ -49,14 +49,21 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolderFood> {
         holder.mCardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(mContext, RecipeDescriptionActivity.class);
-                intent.putExtra("Image", myFoodList.get(holder.getAdapterPosition()).getImg());
-                intent.putExtra("Description", myFoodList.get(holder.getAdapterPosition()).getDescription());
-                mContext.startActivity(intent);
+                if(mContext.getClass().equals(MainActivity.class)) {
+                    ((MainActivity) mContext).setViewPager(2);
+                }
+//                Intent intent = new Intent(mContext, RecipeFragment.class);
+//                intent.putExtra("Image", myFoodList.get(holder.getAdapterPosition()).getImg());
+//                intent.putExtra("Description", myFoodList.get(holder.getAdapterPosition()).getDescription());
+//                mContext.startActivity(intent);
             }
         });
 
         setAnimation(holder.itemView, position);
+    }
+
+    public List<FoodMeta> getMyFoodList() {
+        return myFoodList;
     }
 
     public void setAnimation(View viewToAnimate, int pos) {

@@ -1,11 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".RecipeFragment">
+    android:layout_height="match_parent">
 
     <ImageView
         android:id="@+id/detailed_image"
@@ -19,7 +15,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:padding="20dp"
-        android:text="Description"
-        android:textSize="19sp" />
-</LinearLayout>
+        android:padding="20dp" />
+<!--        android:text="Description"-->
+<!--        android:textSize="19sp" -->
+
+
+</RelativeLayout>
