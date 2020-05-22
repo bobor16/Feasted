@@ -1,11 +1,11 @@
 package com.example.feasted;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
@@ -14,7 +14,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
-import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -37,7 +36,7 @@ public class StartScreenFragment extends Fragment {
     private MyAdapter myAdapter;
     private DatabaseReference dbRef;
     private ValueEventListener eventListener;
-    private CardView cardView;
+    private Menu menu;
 
     @Nullable
     @Override
@@ -45,6 +44,8 @@ public class StartScreenFragment extends Fragment {
         View view = inflater.inflate(R.layout.startscreenfragment, container, false);
         FloatingActionButton btn_uploadActivity = (FloatingActionButton) view.findViewById(R.id.uploadButton);
         setHasOptionsMenu(true);
+
+
         recyclerView = view.findViewById(R.id.recyclerView);
 
         GridLayoutManager gridLayoutManager = new GridLayoutManager(view.getContext(), 1);
@@ -56,33 +57,28 @@ public class StartScreenFragment extends Fragment {
 
         recyclerView.setAdapter(myAdapter);
 
-
         dbRef = FirebaseDatabase.getInstance().getReference("Recipe");
 
-//        cardView.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                ((MainActivity) getActivity()).setViewPager(2);
-//
-//            }
-//        });
-
+        view.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                return true;
+            }
+        });
 
         btn_uploadActivity.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                ((MainActivity) getActivity()).setViewPager(1);
                 AppCompatActivity activity = (AppCompatActivity) v.getContext();
                 RecipeUploaderFragment recipeUploaderFragment = new RecipeUploaderFragment();
 
                 FragmentTransaction transaction = activity.getSupportFragmentManager().beginTransaction();
+                transaction.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
                 transaction.replace(R.id.rc, recipeUploaderFragment);
                 transaction.addToBackStack(null);
                 transaction.commit();
 
-
                 Toast.makeText(getActivity(), "Opening new fragment", Toast.LENGTH_SHORT).show();
-//                System.out.println(myFoodList.get(position).getImg() + "\n" + myFoodList.get(position).getDescription());
 
             }
         });
@@ -140,6 +136,7 @@ public class StartScreenFragment extends Fragment {
 
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
+
         inflater.inflate(R.menu.my_menu, menu);
         MenuItem menuItem = menu.findItem(R.id.search_icon);
         SearchView searchView = (SearchView) menuItem.getActionView();

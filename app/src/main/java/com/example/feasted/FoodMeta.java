@@ -1,9 +1,5 @@
 package com.example.feasted;
 
-import android.widget.EditText;
-
-import java.util.ArrayList;
-
 public class FoodMeta {
 
     private String name, description, img, type, ingredient;

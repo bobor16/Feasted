@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -41,11 +43,9 @@ public class RecipeUploaderFragment extends Fragment {
     private String imageUrl;
     private RadioButton vegan_Button, lchf_Button;
 
-    private Object Button;
-
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.upload_recipe_fragment, container, false);
-
+        setHasOptionsMenu(true);
         Button btnSelectImage = view.findViewById(R.id.selectImageButton);
         Button btnUploadRecipe = view.findViewById(R.id.uploadRecipeButton);
 
@@ -77,6 +77,13 @@ public class RecipeUploaderFragment extends Fragment {
     }
 
     @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        menu.clear();
+    }
+
+
+    @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK) {
@@ -87,8 +94,8 @@ public class RecipeUploaderFragment extends Fragment {
         }
     }
 
-    public void backToStart(View v) {
-        AppCompatActivity activity = (AppCompatActivity) v.getContext();
+    public void backToStart() {
+        AppCompatActivity activity = (AppCompatActivity) getContext();
         StartScreenFragment startScreenFragment = new StartScreenFragment();
 
         FragmentTransaction transaction = activity.getSupportFragmentManager().beginTransaction();
@@ -99,13 +106,8 @@ public class RecipeUploaderFragment extends Fragment {
 
     public void uploadImage() {
         if (uri != null) {
-            AppCompatActivity activity = (AppCompatActivity) getContext();
-            StartScreenFragment startScreenFragment = new StartScreenFragment();
 
-            FragmentTransaction transaction = activity.getSupportFragmentManager().beginTransaction();
-            transaction.replace(R.id.rc, startScreenFragment);
-            transaction.addToBackStack(null);
-            transaction.commit();
+            backToStart();
 
             StorageReference storageReference = FirebaseStorage.getInstance()
                     .getReference().child("RecipeImage").child(uri.getLastPathSegment());
