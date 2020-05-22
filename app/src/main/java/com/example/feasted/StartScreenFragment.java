@@ -8,12 +8,15 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -29,13 +32,12 @@ import java.util.List;
 
 public class StartScreenFragment extends Fragment {
 
-    RecyclerView recyclerView;
-    GridLayoutManager gridLayoutManager;
-    List<FoodMeta> myFoodList;
-    MyAdapter myAdapter;
+    private RecyclerView recyclerView;
+    private List<FoodMeta> myFoodList;
+    private MyAdapter myAdapter;
     private DatabaseReference dbRef;
     private ValueEventListener eventListener;
-    CardView cardView;
+    private CardView cardView;
 
     @Nullable
     @Override
@@ -45,7 +47,6 @@ public class StartScreenFragment extends Fragment {
         setHasOptionsMenu(true);
         recyclerView = view.findViewById(R.id.recyclerView);
 
-
         GridLayoutManager gridLayoutManager = new GridLayoutManager(view.getContext(), 1);
         recyclerView.setLayoutManager(gridLayoutManager);
 
@@ -53,25 +54,35 @@ public class StartScreenFragment extends Fragment {
 
         myAdapter = new MyAdapter(view.getContext(), myFoodList);
 
-
-
         recyclerView.setAdapter(myAdapter);
 
-        cardView = view.findViewById(R.id.cardView);
 
         dbRef = FirebaseDatabase.getInstance().getReference("Recipe");
 
 //        cardView.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {
-//                    ((MainActivity) getActivity()).setViewPager(1);
+//                ((MainActivity) getActivity()).setViewPager(2);
+//
 //            }
 //        });
+
 
         btn_uploadActivity.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((MainActivity)getActivity()).setViewPager(1);
+//                ((MainActivity) getActivity()).setViewPager(1);
+                AppCompatActivity activity = (AppCompatActivity) v.getContext();
+                RecipeUploaderFragment recipeUploaderFragment = new RecipeUploaderFragment();
+
+                FragmentTransaction transaction = activity.getSupportFragmentManager().beginTransaction();
+                transaction.replace(R.id.rc, recipeUploaderFragment);
+                transaction.addToBackStack(null);
+                transaction.commit();
+
+
+                Toast.makeText(getActivity(), "Opening new fragment", Toast.LENGTH_SHORT).show();
+//                System.out.println(myFoodList.get(position).getImg() + "\n" + myFoodList.get(position).getDescription());
 
             }
         });
@@ -95,11 +106,10 @@ public class StartScreenFragment extends Fragment {
 
             }
         });
-
         return view;
     }
 
-    private void filter (String text){
+    private void filter(String text) {
         ArrayList<FoodMeta> filterList = new ArrayList<>();
         for (FoodMeta item : myFoodList) {
             if (item.getName().toLowerCase().contains(text.toLowerCase())) {
@@ -112,7 +122,7 @@ public class StartScreenFragment extends Fragment {
     }
 
     @Override
-    public boolean onOptionsItemSelected (@NonNull MenuItem item){
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.sort_lchf:
                 filter("lchf");
@@ -128,7 +138,7 @@ public class StartScreenFragment extends Fragment {
         return super.onOptionsItemSelected(item);
     }
 
-    public void onCreateOptionsMenu (Menu menu, MenuInflater inflater){
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.my_menu, menu);
         MenuItem menuItem = menu.findItem(R.id.search_icon);

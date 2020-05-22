@@ -1,40 +1,15 @@
 package com.example.feasted;
 
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
 import android.widget.ArrayAdapter;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.SearchView;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-
-import java.util.ArrayList;
-import java.util.List;
-
 public class MainActivity extends AppCompatActivity {
 
-    RecyclerView recyclerView;
-
-
-
-    ProgressDialog progressDialog;
-    ArrayAdapter<String> arrayAdapter;
-    MyAdapter myAdapter;
     private SectionStagePagerAdapter sectionStagePagerAdapter;
     private ViewPager viewPager;
 
@@ -91,26 +66,19 @@ public class MainActivity extends AppCompatActivity {
 //        });
     }
 
-        private void setupViewPager(ViewPager viewPager) {
-            SectionStagePagerAdapter adapter = new SectionStagePagerAdapter(getSupportFragmentManager());
+    private void setupViewPager(ViewPager viewPager) {
+        SectionStagePagerAdapter adapter = new SectionStagePagerAdapter(getSupportFragmentManager());
 
-            adapter.addFragment(new StartScreenFragment(), "Start Screen");
-            adapter.addFragment(new RecipeUploaderFragment(), "Uploader Fragment");
-            adapter.addFragment(new RecipeFragment(), "Recipe Fragment");
+        adapter.addFragment(new StartScreenFragment(), "Start Screen");
+//        adapter.addFragment(new RecipeUploaderFragment(), "Uploader Fragment");
+//        adapter.addFragment(new RecipeFragment(), "Recipe Fragment");
 
-            viewPager.setAdapter(adapter);
-        }
-
-
-
-        public void setViewPager(int fragmentNumber){
-            viewPager.setCurrentItem(fragmentNumber);
-        }
+        viewPager.setAdapter(adapter);
+    }
 
 
-//
+    public void setViewPager(int fragmentNumber) {
+        viewPager.setCurrentItem(fragmentNumber);
+    }
 
-//
-
-//    }
 }

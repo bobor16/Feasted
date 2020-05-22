@@ -3,10 +3,8 @@ package com.example.feasted;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +16,9 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -35,12 +35,11 @@ import java.util.Calendar;
 
 public class RecipeUploaderFragment extends Fragment {
 
-    ImageView recipeImage;
-    Uri uri;
-    EditText upload_description, recipeName;
-    String imageUrl;
-    RadioButton vegan_Button, lchf_Button;
-    View view;
+    private ImageView recipeImage;
+    private Uri uri;
+    private EditText upload_description, recipeName, ingredient;
+    private String imageUrl;
+    private RadioButton vegan_Button, lchf_Button;
 
     private Object Button;
 
@@ -55,6 +54,7 @@ public class RecipeUploaderFragment extends Fragment {
         upload_description = view.findViewById(R.id.upload_description);
         vegan_Button = view.findViewById(R.id.vegan_Button);
         lchf_Button = view.findViewById(R.id.lchf_Button);
+        ingredient = view.findViewById(R.id.upload_ingredients);
 
         btnSelectImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -69,6 +69,7 @@ public class RecipeUploaderFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 uploadImage();
+
             }
         });
 
@@ -78,7 +79,7 @@ public class RecipeUploaderFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == Activity.RESULT_OK){
+        if (resultCode == Activity.RESULT_OK) {
             uri = data.getData();
             recipeImage.setImageURI(uri);
         } else {
@@ -86,35 +87,53 @@ public class RecipeUploaderFragment extends Fragment {
         }
     }
 
+    public void backToStart(View v) {
+        AppCompatActivity activity = (AppCompatActivity) v.getContext();
+        StartScreenFragment startScreenFragment = new StartScreenFragment();
+
+        FragmentTransaction transaction = activity.getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.rc, startScreenFragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
+    }
+
     public void uploadImage() {
-        if (uri != null){
-            ((MainActivity) getActivity()).setViewPager(0);
+        if (uri != null) {
+            AppCompatActivity activity = (AppCompatActivity) getContext();
+            StartScreenFragment startScreenFragment = new StartScreenFragment();
+
+            FragmentTransaction transaction = activity.getSupportFragmentManager().beginTransaction();
+            transaction.replace(R.id.rc, startScreenFragment);
+            transaction.addToBackStack(null);
+            transaction.commit();
+
             StorageReference storageReference = FirebaseStorage.getInstance()
                     .getReference().child("RecipeImage").child(uri.getLastPathSegment());
 
-        ProgressDialog progressDialog = new ProgressDialog(getContext());
-        progressDialog.setMessage("Recipe Uploading....");
-        progressDialog.show();
+            ProgressDialog progressDialog = new ProgressDialog(getContext());
+            progressDialog.setMessage("Recipe Uploading....");
+            progressDialog.show();
 
-        storageReference.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                Task<Uri> uriTask = taskSnapshot.getStorage().getDownloadUrl();
-                while (!uriTask.isComplete()) ;
-                Uri urlImage = uriTask.getResult();
-                imageUrl = urlImage.toString();
-                uploadRecipe();
-                progressDialog.dismiss();
-                System.out.println("THIS IS THE IMAGE URL: " + imageUrl);
-            }
+            storageReference.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    Task<Uri> uriTask = taskSnapshot.getStorage().getDownloadUrl();
+                    while (!uriTask.isComplete()) ;
+                    Uri urlImage = uriTask.getResult();
+                    imageUrl = urlImage.toString();
+                    uploadRecipe();
+//                    ((MainActivity) getActivity()).setViewPager(0);
+                    progressDialog.dismiss();
+                    System.out.println("THIS IS THE IMAGE URL: " + imageUrl);
+                }
 
 
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                progressDialog.dismiss();
-            }
-        });
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    progressDialog.dismiss();
+                }
+            });
         } else {
             Toast.makeText(getContext(), "Select an image", Toast.LENGTH_SHORT).show();
         }
@@ -135,7 +154,8 @@ public class RecipeUploaderFragment extends Fragment {
                 recipeName.getText().toString(),
                 upload_description.getText().toString(),
                 imageUrl,
-                recipeType()
+                recipeType(),
+                ingredient.getText().toString()
         );
 
         String myCurrentDateTime = DateFormat.getDateTimeInstance()

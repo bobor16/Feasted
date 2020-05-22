@@ -9,18 +9,22 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class RecipeFragment extends Fragment {
 
-    TextView description, type;
-    ImageView img;
-    FoodMeta foodMeta;
+    private TextView description, type, ingredient;
+    private ImageView img;
+    MyAdapter myAdapter;
+    List<FoodMeta> myFoodList;
 
-    public RecipeFragment newInstance(String data){
+
+    public RecipeFragment newInstance(String data) {
         RecipeFragment fragment = new RecipeFragment();
 
         Bundle args = new Bundle();
@@ -30,44 +34,26 @@ public class RecipeFragment extends Fragment {
         return fragment;
     }
 
-    public int getIndex(){
-        return getArguments().getInt("Index", 0);
-    }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.recipefragment, container, false);
-        foodMeta = new FoodMeta();
-        description = view.findViewById(R.id.recipeDescription);
-        img = view.findViewById(R.id.detailed_image);
-        type = view.findViewById(R.id.detailed_type);
 
         Bundle bundle = getArguments();
-        if(bundle != null){
-            Picasso.get().load(foodMeta.getImg()).into(img);
-            //Picasso.get().load(bundle.getString("Image")).into(img);
-            description.setText(bundle.getString("Description"));
+
+        description = view.findViewById(R.id.detailedDescription);
+        img = view.findViewById(R.id.detailedImage);
+        ingredient = view.findViewById(R.id.detailedIngredient);
+
+        if (bundle != null) {
+            Picasso.get().load(bundle.getString("Image")).into(img);
 //            Picasso.get().load("Image").into(img);
+            description.setText(bundle.getString("Description"));
+            ingredient.setText(bundle.getString("Ingredients"));
 //            description.setText("Decsription");
         }
-
         return view;
     }
 
-//        @Override
-//    protected void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_recipe_description);
-//
-//        description = findViewById(R.id.recipeDescription);
-//        img = findViewById(R.id.detailed_image);
-//        type = findViewById(R.id.detailed_type);
-//
-//        Bundle bundle = getIntent().getExtras();
-//        if (bundle != null) {
-//            Picasso.get().load(bundle.getString("Image")).into(img);
-//            description.setText(bundle.getString("Description"));
-//        }
-//    }
 }
