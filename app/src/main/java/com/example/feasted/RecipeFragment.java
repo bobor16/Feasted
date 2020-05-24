@@ -21,6 +21,14 @@ public class RecipeFragment extends Fragment {
     private TextView description, ingredient;
     private ImageView img;
 
+    /**
+     * Creates the view the user is prompted after tapping a recipe inside recyclerview.
+     *
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return
+     */
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -46,6 +54,13 @@ public class RecipeFragment extends Fragment {
         return view;
     }
 
+    /**
+     * Makes sure the options menu is not visible when
+     * recipe fragment is visible.
+     *
+     * @param menu
+     * @param inflater
+     */
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);

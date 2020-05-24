@@ -39,6 +39,18 @@ public class StartScreenFragment extends Fragment {
     private ValueEventListener eventListener;
     private ProgressDialog progressDialog;
 
+    /**
+     * Inflates the startscreenfragment which is the firs view the user is given when opening the
+     * app.
+     * <p>
+     * Prompts a progress dialog message telling the user informing the user, the recipes are loading.
+     * recipes are referenced to the Recipe child in the database.
+     *
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return
+     */
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -63,6 +75,12 @@ public class StartScreenFragment extends Fragment {
         dbRef = FirebaseDatabase.getInstance().getReference("Recipe");
         progressDialog.show();
         view.setOnTouchListener(new View.OnTouchListener() {
+            /**
+             * Ensures the user cant tap fragments in the background.
+             * @param v
+             * @param event
+             * @return
+             */
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 return true;
@@ -70,6 +88,10 @@ public class StartScreenFragment extends Fragment {
         });
 
         btn_uploadActivity.setOnClickListener(new View.OnClickListener() {
+            /**
+             * Floating action button in lower right corner opens upload fragment.
+             * @param v
+             */
             @Override
             public void onClick(View v) {
                 AppCompatActivity activity = (AppCompatActivity) v.getContext();
@@ -85,6 +107,11 @@ public class StartScreenFragment extends Fragment {
 
         eventListener = dbRef.addValueEventListener(new ValueEventListener() {
 
+            /**
+             * Event listener retrieves  data snapshot of children of Recipe.
+             * progress dialog message dismissed after load.
+             * @param dataSnapshot
+             */
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 myFoodList.clear();
@@ -98,7 +125,10 @@ public class StartScreenFragment extends Fragment {
 
             }
 
-
+            /**
+             * dismisses progress dialog message if cancelled.
+             * @param databaseError
+             */
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
                 progressDialog.dismiss();
@@ -107,6 +137,11 @@ public class StartScreenFragment extends Fragment {
         return view;
     }
 
+    /**
+     * Searching for text in arraylist of type FoodMeta and the type.
+     *
+     * @param text
+     */
     private void filter(String text) {
         ArrayList<FoodMeta> filterList = new ArrayList<>();
         for (FoodMeta item : myFoodList) {
@@ -119,6 +154,12 @@ public class StartScreenFragment extends Fragment {
         myAdapter.filteredList(filterList);
     }
 
+    /**
+     * Returns the selected type from the actionbar to the user.
+     *
+     * @param item
+     * @return
+     */
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
@@ -139,6 +180,12 @@ public class StartScreenFragment extends Fragment {
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * inflates the search bar after tap on the search_icon
+     *
+     * @param menu
+     * @param inflater
+     */
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.my_menu, menu);
@@ -153,6 +200,11 @@ public class StartScreenFragment extends Fragment {
                 return false;
             }
 
+            /**
+             * Displays the recipes which description match input from search bar.
+             * @param newText
+             * @return
+             */
             @Override
             public boolean onQueryTextChange(String newText) {
                 filter(newText);

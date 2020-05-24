@@ -10,7 +10,6 @@ import android.view.animation.ScaleAnimation;
 import android.widget.ImageView;
 import android.widget.SearchView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -29,11 +28,24 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolderFood> {
     private List<FoodMeta> myFoodList;
     private int lastPos = -1;
 
+    /**
+     * Constructor of the class. Takes context and a list of type FoodMeta
+     *
+     * @param context
+     * @param myFoodList
+     */
     public MyAdapter(Context context, List<FoodMeta> myFoodList) {
         this.mContext = context;
         this.myFoodList = myFoodList;
     }
 
+    /**
+     * inflates recycler_row_item
+     *
+     * @param parent
+     * @param viewType
+     * @return
+     */
     @NonNull
     @Override
     public ViewHolderFood onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -41,6 +53,12 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolderFood> {
         return new ViewHolderFood(view);
     }
 
+    /**
+     * Displays the data to the recyclerview.
+     *
+     * @param holder
+     * @param position
+     */
     @Override
     public void onBindViewHolder(@NonNull final ViewHolderFood holder, final int position) {
         Bundle bundle = new Bundle();
@@ -49,6 +67,9 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolderFood> {
         holder.mDescription.setText(myFoodList.get(position).getDescription());
         holder.mDetailedType.setText(myFoodList.get(position).getType());
 
+        /**
+         * Displays the data to the user when cardview is clicked.
+         */
         holder.mCardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -71,12 +92,12 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolderFood> {
         setAnimation(holder.itemView, position);
     }
 
-
-    public List<FoodMeta> getMyFoodList() {
-        return myFoodList;
-    }
-
-
+    /**
+     * Animation for the cardview when loaded into the view.
+     *
+     * @param viewToAnimate
+     * @param pos
+     */
     public void setAnimation(View viewToAnimate, int pos) {
         if (pos > lastPos) {
             ScaleAnimation animation = new ScaleAnimation(0.0f, 1.0f, 0.0f, 1.0f,
@@ -98,6 +119,9 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolderFood> {
         notifyDataSetChanged();
     }
 
+    /**
+     * Nested class which holds the references from the user input
+     */
     class ViewHolderFood extends RecyclerView.ViewHolder {
 
         ImageView imageView;

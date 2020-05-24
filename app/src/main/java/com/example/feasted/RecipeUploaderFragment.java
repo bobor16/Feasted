@@ -32,7 +32,6 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
-import java.text.DateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -44,6 +43,15 @@ public class RecipeUploaderFragment extends Fragment {
     private String imageUrl;
     private RadioButton vegan_Button, lchf_Button;
 
+    /**
+     * Creates the view which enables the user to upload new recipes to the database and furthermore
+     * displays the data to the user.
+     *
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return
+     */
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.upload_recipe_fragment, container, false);
         setHasOptionsMenu(true);
@@ -58,6 +66,11 @@ public class RecipeUploaderFragment extends Fragment {
         ingredient = view.findViewById(R.id.upload_ingredients);
 
         btnSelectImage.setOnClickListener(new View.OnClickListener() {
+            /**
+             * Enables the user to select an image from local storage
+             * with permission from the manifest
+             * @param v
+             */
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(Intent.ACTION_PICK);
@@ -65,8 +78,11 @@ public class RecipeUploaderFragment extends Fragment {
                 startActivityForResult(intent, 1);
             }
         });
-
         btnUploadRecipe.setOnClickListener(new View.OnClickListener() {
+            /**
+             * Uploads the image by tapping the button.
+             * @param v
+             */
             @Override
             public void onClick(View v) {
                 uploadImage();
@@ -76,13 +92,26 @@ public class RecipeUploaderFragment extends Fragment {
         return view;
     }
 
+    /**
+     * Ensures the search and actionbar is invisible for the user when the user is displayed
+     * the upload fragment.
+     *
+     * @param menu
+     * @param inflater
+     */
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         menu.clear();
     }
 
-
+    /**
+     * Ensures the user has selected an image to upload.
+     *
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -94,6 +123,9 @@ public class RecipeUploaderFragment extends Fragment {
         }
     }
 
+    /**
+     * Redirects the user back to the start screen.
+     */
     public void backToStart() {
         AppCompatActivity activity = (AppCompatActivity) getContext();
         StartScreenFragment startScreenFragment = new StartScreenFragment();
@@ -104,6 +136,10 @@ public class RecipeUploaderFragment extends Fragment {
         transaction.commit();
     }
 
+    /**
+     * uploads the image selected to the database with a reference to "RecipeImage" child.
+     * prompts the user a progress dialog bar.
+     */
     public void uploadImage() {
         if (uri != null) {
 
@@ -117,6 +153,10 @@ public class RecipeUploaderFragment extends Fragment {
             progressDialog.show();
 
             storageReference.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                /**
+                 * gets the url where the image is to be uploaded. Uploads the image and the recipe
+                 * @param taskSnapshot
+                 */
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                     Task<Uri> uriTask = taskSnapshot.getStorage().getDownloadUrl();
@@ -130,9 +170,15 @@ public class RecipeUploaderFragment extends Fragment {
 
 
             }).addOnFailureListener(new OnFailureListener() {
+                /**
+                 * Dismisses the progress dialog message.
+                 * prompts a toast to the user with further information.
+                 * @param e
+                 */
                 @Override
                 public void onFailure(@NonNull Exception e) {
                     progressDialog.dismiss();
+                    Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             });
         } else {
@@ -140,6 +186,11 @@ public class RecipeUploaderFragment extends Fragment {
         }
     }
 
+    /**
+     * Switch case which returns the type of recipes the user wants uploaded.
+     *
+     * @return
+     */
     public String recipeType() {
         if (vegan_Button.isChecked()) {
             return "Vegan";
@@ -150,6 +201,10 @@ public class RecipeUploaderFragment extends Fragment {
         }
     }
 
+    /**
+     * Creates an object of FoodMeta which is to be uploaded to the database with reference to
+     * parent (currentTime), child (Recipe). structured in json format.
+     */
     public void uploadRecipe() {
         FoodMeta foodMeta = new FoodMeta(
                 recipeName.getText().toString(),
@@ -159,11 +214,7 @@ public class RecipeUploaderFragment extends Fragment {
                 ingredient.getText().toString()
         );
 
-//        String myCurrentDateTime = DateFormat.getDateTimeInstance()
-//                .format(Calendar.getInstance().getTime());
-
         Date currentTime = Calendar.getInstance().getTime();
-
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference();
@@ -171,6 +222,10 @@ public class RecipeUploaderFragment extends Fragment {
                 .child(currentTime.toString())
                 .setValue(foodMeta)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    /**
+                     * Prompts the user a toast when upload is completed.
+                     * @param task
+                     */
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
@@ -178,6 +233,10 @@ public class RecipeUploaderFragment extends Fragment {
                         }
                     }
                 }).addOnFailureListener(new OnFailureListener() {
+            /**
+             * Prompts the user a toast if the upload fails.
+             * @param e
+             */
             @Override
             public void onFailure(@NonNull Exception e) {
                 Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
