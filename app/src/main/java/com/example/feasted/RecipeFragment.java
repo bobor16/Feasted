@@ -20,7 +20,6 @@ public class RecipeFragment extends Fragment {
 
     private TextView description, ingredient;
     private ImageView img;
-    private Menu menu;
 
     @Nullable
     @Override
@@ -28,6 +27,7 @@ public class RecipeFragment extends Fragment {
         View view = inflater.inflate(R.layout.recipefragment, container, false);
         Bundle bundle = getArguments();
         setHasOptionsMenu(true);
+
         description = view.findViewById(R.id.detailedDescription);
         img = view.findViewById(R.id.detailedImage);
         ingredient = view.findViewById(R.id.detailedIngredient);
@@ -39,9 +39,7 @@ public class RecipeFragment extends Fragment {
         });
 
         if (bundle != null) {
-            Picasso.get()
-                    .load(bundle.getString("Image"))
-                    .into(img);
+            Picasso.get().load(bundle.getString("Image")).into(img);
             description.setText(bundle.getString("Description"));
             ingredient.setText(bundle.getString("Ingredients"));
         }

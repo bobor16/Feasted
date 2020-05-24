@@ -24,7 +24,7 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
         android:layout_margin="40dp"
-        android:backgroundTint="@color/colorPrimary"
+        android:background="@color/colorPrimaryDark"
         android:onClick="btn_uploadActivity"
         android:src="@drawable/ic_file_upload_black_24dp">
 

@@ -34,6 +34,7 @@ import com.google.firebase.storage.UploadTask;
 
 import java.text.DateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 public class RecipeUploaderFragment extends Fragment {
 
@@ -69,7 +70,6 @@ public class RecipeUploaderFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 uploadImage();
-
             }
         });
 
@@ -97,8 +97,8 @@ public class RecipeUploaderFragment extends Fragment {
     public void backToStart() {
         AppCompatActivity activity = (AppCompatActivity) getContext();
         StartScreenFragment startScreenFragment = new StartScreenFragment();
-
         FragmentTransaction transaction = activity.getSupportFragmentManager().beginTransaction();
+        transaction.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
         transaction.replace(R.id.rc, startScreenFragment);
         transaction.addToBackStack(null);
         transaction.commit();
@@ -124,7 +124,6 @@ public class RecipeUploaderFragment extends Fragment {
                     Uri urlImage = uriTask.getResult();
                     imageUrl = urlImage.toString();
                     uploadRecipe();
-//                    ((MainActivity) getActivity()).setViewPager(0);
                     progressDialog.dismiss();
                     System.out.println("THIS IS THE IMAGE URL: " + imageUrl);
                 }
@@ -160,19 +159,25 @@ public class RecipeUploaderFragment extends Fragment {
                 ingredient.getText().toString()
         );
 
-        String myCurrentDateTime = DateFormat.getDateTimeInstance()
-                .format(Calendar.getInstance().getTime());
+//        String myCurrentDateTime = DateFormat.getDateTimeInstance()
+//                .format(Calendar.getInstance().getTime());
+
+        Date currentTime = Calendar.getInstance().getTime();
+
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference("Recipe");
-        myRef.child(myCurrentDateTime).setValue(foodMeta).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                if (task.isSuccessful()) {
-                    Toast.makeText(getContext(), "Recipe Uploaded", Toast.LENGTH_SHORT).show();
-                }
-            }
-        }).addOnFailureListener(new OnFailureListener() {
+        DatabaseReference myRef = database.getReference();
+        myRef.child("Recipe")
+                .child(currentTime.toString())
+                .setValue(foodMeta)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            Toast.makeText(getContext(), "Recipe Uploaded", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
                 Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();

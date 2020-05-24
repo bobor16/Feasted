@@ -1,5 +1,6 @@
 package com.example.feasted;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -36,7 +37,7 @@ public class StartScreenFragment extends Fragment {
     private MyAdapter myAdapter;
     private DatabaseReference dbRef;
     private ValueEventListener eventListener;
-    private Menu menu;
+    private ProgressDialog progressDialog;
 
     @Nullable
     @Override
@@ -44,7 +45,6 @@ public class StartScreenFragment extends Fragment {
         View view = inflater.inflate(R.layout.startscreenfragment, container, false);
         FloatingActionButton btn_uploadActivity = (FloatingActionButton) view.findViewById(R.id.uploadButton);
         setHasOptionsMenu(true);
-
 
         recyclerView = view.findViewById(R.id.recyclerView);
 
@@ -57,8 +57,11 @@ public class StartScreenFragment extends Fragment {
 
         recyclerView.setAdapter(myAdapter);
 
-        dbRef = FirebaseDatabase.getInstance().getReference("Recipe");
+        progressDialog = new ProgressDialog(view.getContext());
+        progressDialog.setMessage("Loading recipes....");
 
+        dbRef = FirebaseDatabase.getInstance().getReference("Recipe");
+        progressDialog.show();
         view.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -77,9 +80,6 @@ public class StartScreenFragment extends Fragment {
                 transaction.replace(R.id.rc, recipeUploaderFragment);
                 transaction.addToBackStack(null);
                 transaction.commit();
-
-                Toast.makeText(getActivity(), "Opening new fragment", Toast.LENGTH_SHORT).show();
-
             }
         });
 
@@ -93,13 +93,15 @@ public class StartScreenFragment extends Fragment {
                     FoodMeta meta = snapshot.getValue(FoodMeta.class);
                     myFoodList.add(meta);
                 }
-
                 myAdapter.notifyDataSetChanged();
+                progressDialog.dismiss();
+
             }
+
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-
+                progressDialog.dismiss();
             }
         });
         return view;
@@ -129,6 +131,9 @@ public class StartScreenFragment extends Fragment {
             case R.id.show_all:
                 filter("");
                 break;
+            case R.id.rc:
+
+                return true;
         }
 
         return super.onOptionsItemSelected(item);
@@ -136,9 +141,9 @@ public class StartScreenFragment extends Fragment {
 
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-
         inflater.inflate(R.menu.my_menu, menu);
         MenuItem menuItem = menu.findItem(R.id.search_icon);
+
         SearchView searchView = (SearchView) menuItem.getActionView();
         searchView.setQueryHint("Search here!");
 

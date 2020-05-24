@@ -5,7 +5,7 @@
     <string name="select_image">Select Image</string>
     <string name="upload_recipe">Upload Recipe</string>
     <string name="search">Search</string>
-    <string name="only_show_vegan">Only show vegan</string>
-    <string name="only_show_lchf">Only show LCHF</string>
+    <string name="only_show_vegan">Sort by vegan</string>
+    <string name="only_show_lchf">Sort by LCHF</string>
     <string name="show_all">Show all</string>
 </resources>

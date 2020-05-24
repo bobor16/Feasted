@@ -43,9 +43,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolderFood> {
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolderFood holder, final int position) {
-
+        Bundle bundle = new Bundle();
         Picasso.get().load(myFoodList.get(position).getImg()).into(holder.imageView);
-
         holder.mTitle.setText(myFoodList.get(position).getName());
         holder.mDescription.setText(myFoodList.get(position).getDescription());
         holder.mDetailedType.setText(myFoodList.get(position).getType());
@@ -55,22 +54,19 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolderFood> {
             public void onClick(View v) {
                 AppCompatActivity activity = (AppCompatActivity) v.getContext();
                 RecipeFragment recipeFragment = new RecipeFragment();
-                Bundle bundle = new Bundle();
                 bundle.putString("Image", myFoodList.get(holder.getAdapterPosition()).getImg());
                 bundle.putString("Description", myFoodList.get(holder.getAdapterPosition()).getDescription());
                 bundle.putString("Ingredients", myFoodList.get(holder.getAdapterPosition()).getIngredient());
                 recipeFragment.setArguments(bundle);
+
                 FragmentTransaction transaction = activity.getSupportFragmentManager().beginTransaction();
                 transaction.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+
                 transaction.replace(R.id.rc, recipeFragment);
                 transaction.addToBackStack(null);
                 transaction.commit();
-
-                Toast.makeText(mContext, "Opening new fragment", Toast.LENGTH_SHORT).show();
-                System.out.println(myFoodList.get(position).getImg() + "\n" + myFoodList.get(position).getDescription());
             }
         });
-
 
         setAnimation(holder.itemView, position);
     }
@@ -104,16 +100,15 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolderFood> {
 
     class ViewHolderFood extends RecyclerView.ViewHolder {
 
-        // StartScreenFragment
         ImageView imageView;
-        TextView mTitle, mDescription, mDetailedType;
+        TextView mTitle, mDescription, mDetailedType, mIngredient;
         CardView mCardView;
         SearchView mSearch;
 
         public ViewHolderFood(View itemView) {
             super(itemView);
 
-            // StartScreenFragment
+            mIngredient = itemView.findViewById(R.id.detailedIngredient);
             imageView = itemView.findViewById(R.id.ivImage);
             mTitle = itemView.findViewById(R.id.title);
             mDescription = itemView.findViewById(R.id.description);
